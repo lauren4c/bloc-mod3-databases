@@ -5,7 +5,7 @@ String:        "A Clockwork Orange" -
 Integer:         42
 string:           09/02/1945
 Float:           98.7
-String:          $15.99
+fixed number:          $15.99
 
 > 2.Explain when a database would be used. Explain when a text file would be used.
 A: A database is best used when multiple users/servers will be accessing the same data. A text file would be sufficient if only 1 user would be adding/editing/searching data at one time.
