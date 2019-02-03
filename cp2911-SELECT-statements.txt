@@ -1,0 +1,106 @@
+###Assignment
+
+>1. Write out a generic SELECT statement.
+
+SELECT *
+FROM pets
+WHERE species LIKE 'd%';
+
+>2. Create a fun way to remember the order of operations in a SELECT statement, such as a mnemonic.
+
+Select From Where = S.F.W. = Save For Work
+
+>3. Given this dogs table, write queries to select the following pieces of data:
+      >  Intake teams typically guess the breed of shelter dogs, so the breed column may have multiple words (for example, "Labrador Collie mix").
+
+        >Display the name, gender, and age of all dogs that are part Labrador.
+        SELECT name, gender, age
+        FROM dogs
+        WHERE breed LIKE '%labrador%';
+
+        >Display the ids of all dogs that are under 1 year old.
+        SELECT id
+        FROM dogs
+        WHERE age < 1;
+
+        >Display the name and age of all dogs that are female and over 35lbs.
+        SELECT name, age
+        FROM dogs
+        WHERE gender = 'F'
+        AND weight > 35;
+
+        >Display all of the information about all dogs that are not Shepherd mixes.
+        SELECT *
+        FROM dogs
+        WHERE breed NOT LIKE '%shepherd%';
+
+        >Display the id, age, weight, and breed of all dogs that are either over 60lbs or Great Danes.
+        SELECT id, age, weight, breed
+        FROM dogs
+        WHERE weight > 60
+        OR breed = 'great dane';
+
+>4. Given this cats table, what records are returned from these queries?
+        > SELECT name, adoption_date FROM cats;
+      'Mushi','2016-03-22',
+      'Seashell', NULL,
+      'Azul', '2016-04-17',
+      'Victoire', '2016-09-01',
+      'Nala', NULL;
+
+        > SELECT name, age FROM cats;
+      'Mushi',   1,
+      'Seashell',  7,
+      'Azul',  3,
+      'Victoire',  7,
+      'Nala',  1,
+
+
+>5 From the cats table, write queries to select the following pieces of data.
+        >Display all the information about all of the available cats.
+        SELECT *
+        FROM cats
+        WHERE adoption_date = NULL;
+
+        >Display the name and sex of all cats who are 7 years old.
+        SELECT name, gender
+        FROM cats
+        WHERE age = 7;
+
+        >Find all of the names of the cats, so you don’t choose duplicate names for new cats.
+        SELECT name
+        FROM cats;
+
+>6. List each comparison operator and explain when you would use it. Include a real world example for each.
+        >If you can’t list these from memory, do these flashcards until you can!
+
+        > Greater Than. Used for comparing two values. SELECT cats whose age is greater(>) than 9.
+        < Less Than. Used for comparing two values. SELECT cats whose age is less than(<) than 2.
+        <= Less than or Equal to. Used for comparing two values. SELECT cat weight that is Less than or equal to (<=) 10.
+        >= Greater than or Equal to. Used for comparing two values. SELECT cat weight that is Greater than or equal to (>=) 10.
+        != NOT. Used for comparing two values. Select Cats that are NOT (!=) adopted.
+        <> Less Than or Greater than. Used for comparing two values and often used in conjunction or in place of NOT (!=). Select Cats that are Less than or Greater Than (<>) 5 years old.
+        = Equal To. Used for comparing two values that are the same. Select cats whose adoption_date is equal to (=) null.
+        LIKE Used to match what a string may contain. Dog breed LIKE 'husky'.
+        BETWEEN Used for selecting a number between X and Y. Dog age BETWEEN 3 and 7.
+        IS TRUE/FALSE Boolean expression where input could be null. Input adoption_date IS TRUE returns true.
+        IS DISTINCT FROM This is used in place of <> where the input could be null. Dog Breed IS DISTINCT FROM 'labrador'
+        IS NULL Determines when values are null. Adopted cats have an adoption_date that is NOT NULL.
+        AND Requires both expressions to be true. DOG Age < 3 AND weight < 20 returns young, small dogs.
+        OR Requires one expression to be true. DOG Age > 3 OR weight < 20 returns young dogs OR small dogs.
+        NOT Requires an express to be false to be returned. Dog AGE is NOT 0 returns full-grown dogs. 
+
+>7. From the cats table, what data is returned from these queries?
+        >SELECT name FROM cats WHERE gender = ‘F’;
+        Seashell,
+        Nala
+
+        >SELECT name FROM cats WHERE age <> 3;
+        Mushi,
+        Seashell,
+        Victorie,
+        Nala
+
+        >SELECT ID FROM cats WHERE name != ‘Mushi’ AND gender = ‘M’;
+        3,
+        4
