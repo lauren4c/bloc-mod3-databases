@@ -60,7 +60,7 @@ Select From Where = S.F.W. = Save For Work
         >Display all the information about all of the available cats.
         SELECT *
         FROM cats
-        WHERE adoption_date = NULL;
+        WHERE adoption_date IS NOT null;
 
         >Display the name and sex of all cats who are 7 years old.
         SELECT name, gender
@@ -88,7 +88,7 @@ Select From Where = S.F.W. = Save For Work
         IS NULL Determines when values are null. Adopted cats have an adoption_date that is NOT NULL.
         AND Requires both expressions to be true. DOG Age < 3 AND weight < 20 returns young, small dogs.
         OR Requires one expression to be true. DOG Age > 3 OR weight < 20 returns young dogs OR small dogs.
-        NOT Requires an express to be false to be returned. Dog AGE is NOT 0 returns full-grown dogs. 
+        NOT Requires an express to be false to be returned. Dog AGE is NOT 0 returns full-grown dogs.
 
 >7. From the cats table, what data is returned from these queries?
         >SELECT name FROM cats WHERE gender = ‘F’;
