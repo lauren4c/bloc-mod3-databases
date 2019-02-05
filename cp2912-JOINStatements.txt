@@ -1,0 +1,176 @@
+###Exercises
+>NOTE: Real-world examples must be your own and not based on the text or previous assignments.
+
+>1. How do you find related data held in two separate data tables?
+A: You can use a JOIN statement to combine the tables by their primary key and foreign key.
+
+>2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN. Give a real-world example for each.
+A: INNER JOIN is the default joining method which creates one row for each matching key among the tables being joined. Example: A rental ski shop wants to combine list of rentals from online reservations and walk-in renters.
+LEFT OUTER JOIN: Creates a new table with a row for each row in the first table and combines that with a matching row from the second table. Example: Rental shop wants to combine the list of bindings that will fit on each ski in inventory.
+RIGHT OUTER JOIN: Creates a new table with matching rows from table being combined and also produces a row for each row in the second table. Example: Rental ski shop wants to combine a list of current renters with the list of skis in inventory that the renters are using.
+
+>3. Define primary key and foreign key. Give a real-world example for each.
+A: A primary key is the unique identifier for each row in a spreadsheet. A foreign key is a secondary identifier in a table that relates to a different table.
+Example: A doctor's office wants to compare what they have been paid from insurance with what they have billed to insurance. Given a table for each, they could combine tables using the primary key of billing codes in the payed table with the foreign key of billing codes in the billed table.
+
+>4. Define aliasing.
+A: Aliasing is a form of abbreviation that allows you to give table name a variable, which makes typing out the commands more simplified, and creates less chance for a typo.
+
+>5. Change this query so that you are using aliasing:
+GIVEN:
+    ```
+    SELECT professor.name, compensation.salary, compensation.vacation_days
+    FROM professor
+    JOIN compensation
+    ON professor.id = compensation.professor_id;
+    ```
+
+ALIAS-ED:
+        ```
+        SELECT p.name, c.salary, c.vacation_days
+        FROM professor AS p
+        JOIN compensation AS c
+        ON p.id = c.professor_id;
+        ```
+
+>6. Why would you use a NATURAL JOIN? Give a real-world example.
+A: You might used a NATURAL JOIN to combine tables that you are not familiar with, or aren't sure of their column names. It is also a more concise way to write a USING clause.
+Example: Combining an new email newsletter list into another email list.
+
+>7. Using this Employee schema and data, write queries to find the following information:
+
+    List all employees and all shifts.
+
+
+    SELECT employees.name, shifts.*
+        FROM employees
+        JOIN shifts
+        ON employees.id = shifts.id;
+
+| name               | id  | date       | start_time | end_time |
+| ------------------ | --- | ---------- | ---------- | -------- |
+| Hermione Granger   | 1   | 1998-03-09 | 08:00:00   | 12:00:00 |
+| Ronald Weasley     | 2   | 1998-03-09 | 08:00:00   | 16:00:00 |
+| Luna Lovegood      | 3   | 1998-03-09 | 12:00:00   | 16:00:00 |
+| Draco Malfoy       | 4   | 1998-03-09 | 12:00:00   | 20:00:00 |
+| Padma Patil        | 5   | 1998-03-09 | 16:00:00   | 20:00:00 |
+| Neville Longbottom | 6   | 1998-03-10 | 08:00:00   | 12:00:00 |
+| Cedric Diggory     | 7   | 1998-03-10 | 08:00:00   | 16:00:00 |
+| Cho Chang          | 8   | 1998-03-10 | 12:00:00   | 16:00:00 |
+| Dean Thomas        | 9   | 1998-03-10 | 12:00:00   | 20:00:00 |
+
+---
+
+>8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
+
+    >Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
+
+    SELECT volunteers.first_name, volunteers.last_name, dogs.name
+      FROM volunteers
+      LEFT OUTER JOIN dogs
+      ON volunteers.foster_dog_id = dogs.id;
+
+| first_name | last_name  | name      |
+| ---------- | ---------- | --------- |
+| Rubeus     | Hagrid     | Munchkin  |
+| Marjorie   | Dursley    | Marmaduke |
+| Sirius     | Black      |           |
+| Remus      | Lupin      |           |
+| Albus      | Dumbledore |           |
+
+
+    >The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
+
+SELECT cats.name, adopters.first_name, adopters.last_name, cat_adoptions.date
+FROM cat_adoptions
+JOIN cats ON cats.id = cat_adoptions.cat_id
+JOIN adopters ON adopters.id = cat_adoptions.adopter_id
+WHERE DATE_PART('day', CURRENT_DATE::timestamp - cat_adoptions.date::timestamp)<30;
+
+| name     | first_name | last_name | date                     |
+| -------- | ---------- | --------- | ------------------------ |
+| Mushi    | Arabella   | Figg      | 2019-01-15T00:00:00.000Z |
+| Victoire | Argus      | Filch     | 2019-01-20T00:00:00.000Z |
+
+
+    >Create a list of adopters who have not yet chosen a dog to adopt.
+
+    SELECT *
+    FROM adopters
+    LEFT OUTER JOIN dog_adoptions ON adopters.id = dog_adoptions.adopter_id
+    WHERE dog_adoptions.adopter_id IS null;
+
+| id  | first_name | last_name | address             | phone_number | adopter_id | dog_id | date | fee |
+| --- | ---------- | --------- | ------------------- | ------------ | ---------- | ------ | ---- | --- |
+| 1   | Hermione   | Granger   | 32 Granger's Street | 676-464-7837 |            |        |      |     |
+| 2   | Arabella   | Figg      | 4 Wisteria Walk     | 843-228-5239 |            |        |      |     |
+
+
+    >Lists of all cats and all dogs who have not been adopted.
+
+    SELECT dogs.name
+        FROM dogs
+        LEFT JOIN dog_adoptions ON dogs.id = dog_adoptions.dog_id
+        WHERE dog_adoptions.dog_id IS NULL
+    UNION
+    SELECT cats.name
+        FROM cats
+        LEFT JOIN cat_adoptions ON cats.id = cat_adoptions.cat_id
+        WHERE cat_adoptions.cat_id IS NULL;
+
+        | name      |
+        | --------- |
+        | Boujee    |
+        | Lassie    |
+        | Marley    |
+        | Marmaduke |
+        | Munchkin  |
+        | Nala      |
+        | Seashell  |
+
+
+    >The name of the person who adopted Rosco.
+
+    SELECT adopters.first_name, adopters.last_name
+      FROM adopters
+      JOIN dog_adoptions ON adopters.id = dog_adoptions.adopter_id
+      JOIN dogs ON dogs.id = dog_adoptions.dog_id
+      WHERE dogs.name = 'Rosco';
+
+    | first_name | last_name |
+    | ---------- | --------- |
+    | Argus      | Filch     |
+
+
+>9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+    >To determine if the library should buy more copies of a given book, please provide the names and position, in order, of all of the patrons with a hold (request for a book with all copies checked out) on "Advanced Potion-Making".
+
+    SELECT patrons.name
+        FROM patrons
+        RIGHT JOIN holds ON patrons.id = holds.patron_id
+       	JOIN books on books.isbn = holds.isbn
+       	WHERE books.title = 'Advanced Potion-Making'
+        ORDER BY holds.rank DESC;
+
+      | name           |
+      | -------------- |
+      | Cedric Diggory |
+      | Terry Boot     |
+
+
+    >List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+    SELECT
+      patrons.name, books.title
+      FROM transactions
+      JOIN books on (books.isbn = transactions.isbn AND transactions.checked_in_date IS NULL)
+      RIGHT OUTER JOIN patrons ON transactions.patron_id = patrons.id
+
+| name             | title                                   |
+| ---------------- | --------------------------------------- |
+| Terry Boot       | Advanced Potion-Making                  |
+| Hermione Granger |                                         |
+| Padma Patil      |                                         |
+| Cedric Diggory   | Fantastic Beasts and Where to Find Them |
+| Cho Chang        |                                         |
